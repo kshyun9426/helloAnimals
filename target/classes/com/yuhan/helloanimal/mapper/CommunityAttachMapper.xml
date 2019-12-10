@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuhan.helloanimal.mapper.CommunityAttachMapper">
+	
+	<insert id="insert">
+		insert into community_attach(uuid, uploadpath, imagename, community_no)
+		values(#{uuid}, #{uploadpath}, #{imagename}, #{community_no})
+	</insert>
+	
+	<select id="findByCommunity_no" resultType="com.yuhan.helloanimal.vo.CommunityAttachVO">
+		select * from community_attach where community_no = #{community_no}
+	</select>
+	
+	<delete id="delete">
+		delete from community_attach where uuid = #{uuid}
+	</delete>
+	
+	<delete id="deleteAll">
+		delete from community_attach where community_no = #{community_no}
+	</delete>
+	
+	
+</mapper>

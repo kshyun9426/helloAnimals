@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuhan.helloanimal.mapper.CommunityMapper">
+	
+	<insert id="insertCommunity">
+		insert into community(community_no, community_title, community_content, community_password, community_writer)
+		values(seq_community_no.nextval, #{community_title}, #{community_content}, #{community_password}, #{community_writer})
+	</insert>
+	
+	<select id="getCommunity" resultType="com.yuhan.helloanimal.vo.CommunityVO">
+		select * from community where community_no = #{community_no}
+	</select>
+	
+	<delete id="deleteCommunity">
+		delete from community where community_no = #{community_no}
+	</delete>
+	
+	<update id="updateCommunity">
+		update community 
+		set community_title = #{community_title}, community_content = #{community_content}, 
+		community_updatedate = sysdate, community_writer =  #{community_writer}
+		where community_no = #{community_no}
+	</update>
+	
+	<update id="increaseHits">
+		update community
+		set community_hits = community_hits+1
+		where community_no = #{community_no} 
+	</update>
+	
+	<select id="getCommunityList" resultType="com.yuhan.helloanimal.vo.CommunityVO">
+		<![CDATA[
+			select community_no,community_title,community_content,community_password,community_hits,community_regdate,
+					community_updatedate,community_writer 
+			from(
+					select /*+INDEX_DESC(COMMUNITY COMMUNITY_COMMUNITY_NO_PK)*/
+						rownum rn, community_no,community_title,community_content,community_password,community_hits,community_regdate,
+						community_updatedate,community_writer
+					from community
+					where rownum <= ${pageNum} * ${amount}
+				)
+			where rn > (#{pageNum}-1) * #{amount}
+		]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuhan.helloanimal.mapper.CommunityReplyMapper">
+	
+	<insert id="insert">
+		insert into community_reply(reply_no, community_no, reply_content, reply_writer, reply_password)
+		values(seq_community_reply.nextval, #{community_no}, #{reply_content}, #{reply_writer}, #{reply_password})
+	</insert>
+	
+	<delete id="delete">
+		delete from community_reply where reply_no = #{reply_no}
+	</delete>
+	
+	<select id="get" resultType="com.yuhan.helloanimal.vo.CommunityReplyVO">
+		select * from community_reply where reply_no = #{reply_no}
+	</select>
+	
+	<select id="getList" resultType="com.yuhan.helloanimal.vo.CommunityReplyVO">
+		select * 
+		from community_reply 
+		where community_no = #{community_no}
+		order by reply_no asc
+	</select>
+	
+</mapper>
