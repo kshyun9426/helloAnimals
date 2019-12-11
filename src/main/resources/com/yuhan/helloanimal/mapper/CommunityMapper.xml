@@ -5,8 +5,11 @@
 <mapper namespace="com.yuhan.helloanimal.mapper.CommunityMapper">
 	
 	<insert id="insertCommunity">
+		<selectKey keyProperty="community_no" order="BEFORE" resultType="long">
+			select seq_community_no.nextval from dual
+		</selectKey>
 		insert into community(community_no, community_title, community_content, community_password, community_writer)
-		values(seq_community_no.nextval, #{community_title}, #{community_content}, #{community_password}, #{community_writer})
+		values(#{community_no}, #{community_title}, #{community_content}, #{community_password}, #{community_writer})
 	</insert>
 	
 	<select id="getCommunity" resultType="com.yuhan.helloanimal.vo.CommunityVO">
@@ -43,6 +46,10 @@
 				)
 			where rn > (#{pageNum}-1) * #{amount}
 		]]>
+	</select>
+	
+	<select id="getTotalCnt" resultType="int">
+		select count(*) from community
 	</select>
 	
 </mapper>

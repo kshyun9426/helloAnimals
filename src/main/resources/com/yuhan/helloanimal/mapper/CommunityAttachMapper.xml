@@ -21,5 +21,9 @@
 		delete from community_attach where community_no = #{community_no}
 	</delete>
 	
+	<select id="getCountByCommunity_no">
+		select count(*) from community_attach where community_no = #{community_no}
+	</select>
+	
 	
 </mapper>

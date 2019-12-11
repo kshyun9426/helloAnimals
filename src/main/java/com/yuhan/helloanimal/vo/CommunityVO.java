@@ -1,6 +1,7 @@
 package com.yuhan.helloanimal.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.ToString;
 
@@ -15,6 +16,8 @@ public class CommunityVO {
 	private long community_hits; //조회수
 	private Date community_regdate; //등록일
 	private Date community_updatedate; //수정일
+	
+	private List<CommunityAttachVO> attachList;
 	
 	public CommunityVO() {
 		
@@ -75,6 +78,14 @@ public class CommunityVO {
 
 	public void setCommunity_writer(String community_writer) {
 		this.community_writer = community_writer;
+	}
+
+	public List<CommunityAttachVO> getAttachList() {
+		return attachList;
+	}
+
+	public void setAttachList(List<CommunityAttachVO> attachList) {
+		this.attachList = attachList;
 	}
 	
 	

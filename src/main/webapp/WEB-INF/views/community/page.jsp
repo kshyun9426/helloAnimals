@@ -9,13 +9,16 @@
     <h1 class="mt-4 mb-3"><c:out value="${communityInfo.community_title}"/></h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="">목록으로</a>
+        <a href="" class="backToList">목록으로</a>
       </li>
       <li class="breadcrumb-item active">작성자: <c:out value="${communityInfo.community_writer}"/></li>
     </ol>
     <div class="row d-flex flex-wrap justify-content-center">
       <div class="col-lg-10">
-        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="" style="width:100%; height:300px">
+      	<!-- 이미지 갯수만큼 출력 -->
+      	<div class="imageSection">
+      		<img class="img-fluid rounded" src="/helloanimal/resources/img/noimage.gif" alt="" style="width:100%; height:300px">
+      	</div>
         <hr>
         <p>Posted on <fmt:formatDate pattern="yy/MM/dd" value="${communityInfo.community_regdate}"/></p>
         <hr>
@@ -27,7 +30,7 @@
           <div class="card-body">
             <form action="" method="post" name="replyForm">
               <div class="form-group">
-                <textarea class="form-control" name="reply_content" rows="3"></textarea>
+                <textarea class="form-control" name="reply_content" rows="3" placeholder="내용"></textarea>
               </div>
               <div class="form-group">
               	작성자: <input type="text" name="reply_writer" class="form-control col-sm-6"/>
@@ -80,6 +83,7 @@
 <script type="text/javascript" src="/helloanimal/resources/js/reply.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		
 		var replyForm = $("form[name='replyForm']");
 		var replyDeleteModal = $(".modal");
 		var replyInputPassword = replyDeleteModal.find("input[name='reply_password']");
@@ -162,6 +166,25 @@
 				"<label for='message-text' class='col-form-label'>비밀번호:</label><input type='password' class='form-control'"+
 				" name='reply_password'/></div></form>");
 		});
+		
+		
+		//상세보기에서 이미지를 출력하기위한 즉시 실행 함수
+		(function(){
+			var communityNo = "<c:out value='${communityInfo.community_no}'/>";
+			$.getJSON("/helloanimal/attachList", {community_no:communityNo}, function(arr){
+				var tempStr = "";
+				var index = -1;
+				$(arr).each(function(i, attach){
+					var fileCallPath = encodeURIComponent(attach.uploadpath+"/"+attach.uuid+"_"+attach.imagename);
+					tempStr += "<img src='/helloanimal/display?fileName="+fileCallPath+"' class='mb-3' style='width:100%; height:300px'/>";
+					index++;
+				});
+				if(index != -1){
+					$(".imageSection").html(tempStr);
+				}
+			});
+		})();
+		
 	});
 </script>
 

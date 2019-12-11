@@ -10,6 +10,20 @@
 	 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
 	 	crossorigin="anonymous">
+<link rel="stylesheet" 
+		href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
+		crossorigin="anonymous">
+	<style>
+    	img#MOVE_TOP_BTN {
+    		position: fixed;
+    		right: 2%;
+    		bottom: 50px;
+    		display: none;
+    		z-index: 999;
+		}
+    </style>
+	
 </head>
 <body>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -25,7 +39,9 @@
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
 		crossorigin="anonymous"
 		type="text/javascript"></script>
-		
+	
+	<!-- 위로가기 버튼 -->
+    <img src="/helloanimal/resources/img/top.png" class="rounded-circle" id="MOVE_TOP_BTN"></img>
 			
 	<!-- navigation bar -->
 	<nav class="navbar navbar-expand-md navbar-dark bg-primary">
@@ -48,3 +64,23 @@
         	</ul>
     	</div>
 	</nav>
+	
+	
+	<script>
+    $(function() {
+	    $(window).scroll(function() {
+	        if ($(this).scrollTop() > 300) {
+	            $('#MOVE_TOP_BTN').fadeIn();
+	        } else {
+	            $('#MOVE_TOP_BTN').fadeOut();
+	        }
+	    });
+	    
+	    $("#MOVE_TOP_BTN").click(function() {
+	        $('html, body').animate({
+	            scrollTop : 0
+	        }, 400);
+	        return false;
+	    });
+	});
+    </script>

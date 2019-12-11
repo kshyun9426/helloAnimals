@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yuhan.helloanimal.exception.NoGetCommunityException;
+import com.yuhan.helloanimal.mapper.CommunityAttachMapper;
 import com.yuhan.helloanimal.mapper.CommunityMapper;
 import com.yuhan.helloanimal.vo.CommunityVO;
 import com.yuhan.helloanimal.vo.Criteria;
@@ -20,10 +22,23 @@ public class CommunityService implements ICommunityService {
 	@Autowired
 	private CommunityMapper communityMapper;
 	
+	@Autowired
+	private CommunityAttachMapper attachMapper;
+	
+	@Transactional
 	@Override
 	public void insertCommunity(CommunityVO vo) {
 		log.info("커뮤니티 서비스단 삽입진행, VO:"+vo);
 		communityMapper.insertCommunity(vo);
+		
+		if(vo.getAttachList() == null || vo.getAttachList().size() <= 0) {
+			return;
+		}
+		
+		vo.getAttachList().forEach(attach->{
+			attach.setCommunity_no(vo.getCommunity_no());
+			attachMapper.insert(attach);
+		});
 	}
 
 	@Override
@@ -38,7 +53,16 @@ public class CommunityService implements ICommunityService {
 			return vo;
 		throw new NoGetCommunityException();
 	}
-	
+
+	@Override
+	public int getTotalCount() {
+		return communityMapper.getTotalCnt();
+	}
+
+	@Override
+	public void increateHits(long community_no) {
+		communityMapper.increaseHits(community_no);
+	}
 	
 	
 }

@@ -14,7 +14,9 @@ public interface CommunityAttachMapper {
 	
 	public int deleteAll(long community_no);
 	
-//	public List<CommunityAttachVO> getOldFiles();
+	public int getCountByCommunity_no(long community_no);
+	
+	
 }
 
 

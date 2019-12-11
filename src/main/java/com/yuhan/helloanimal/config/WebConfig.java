@@ -25,7 +25,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	}
 	
 	@Override
-	public void customizeRegistration(ServletRegistration.Dynamic registration) {
+	protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
 		
 		MultipartConfigElement multipartConfig = new MultipartConfigElement("C:\\uploadEx\\temp", 

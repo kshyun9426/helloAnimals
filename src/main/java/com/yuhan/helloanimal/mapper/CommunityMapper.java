@@ -19,4 +19,5 @@ public interface CommunityMapper {
 	
 	public List<CommunityVO> getCommunityList(Criteria cri);
 	
+	public int getTotalCnt();
 }

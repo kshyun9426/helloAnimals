@@ -12,4 +12,8 @@ public interface ICommunityService {
 	public List<CommunityVO> getCommunityListWithPaging(Criteria cri);
 	
 	public CommunityVO getSpecificCommunity(long community_no);
+	
+	public int getTotalCount();
+	
+	public void increateHits(long community_no);
 }

@@ -22,9 +22,9 @@
       <div class="card-body">
         <div class="row">
           <div class="col-lg-7">
-            <a href="/helloanimal/community/detailPage">
-              <img class="img-fluid rounded" src="/helloanimal/resources/img/noimage.gif" alt="" 
-              	style="width:100%; height:300px">
+            <a href="${community.community_no}" class="detailTag">
+              <img class="img-fluid rounded" id="preImg_${community.community_no}" src="/helloanimal/resources/img/noimage.gif" 
+              	alt="" style="width:100%; height:300px">
             </a>
           </div>
           <div class="col-lg-5 d-flex flex-column">
@@ -54,7 +54,7 @@
     			</li>	
     			<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
     				<li class='page-item ${pageMaker.cri.pageNum == num ? "active" : ""}'>
-    					<a class='page-link' href="${num}">${num}</a>
+    					<a class='page-link movePage' href="${num}">${num}</a>
     				</li>
     			</c:forEach>
     			<li class='page-item ${pageMaker.next == true ? "" : "disabled"}'>
@@ -67,6 +67,10 @@
 
 <form id="detailPageForm" action="/helloanimal/community/page" method="get">
 	<input type="hidden" name="no" value=""/>
+</form>
+
+<form id="movePageForm" action="/helloanimal/community/list" method="get">
+	<input type="hidden" name="pageNum" value=""/>
 </form>
 
 <!-- Modal 추가 -->
@@ -88,10 +92,11 @@
 </div>
 <!-- /.modal -->
 
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 		
 		var result = '<c:out value="${result}"/>';
+		var movePageForm = $("#movePageForm");
 		checkModal(result); 
 		history.replaceState({},null,null); 
 		function checkModal(result) {
@@ -103,11 +108,35 @@
 			$("#infoModal").modal("show"); 
 		}
 		
+		//상세 보기 클릭 시
 		$(".detailTag").on("click", function(e){
 			e.preventDefault();
 			$("#detailPageForm").find("input[name='no']").val($(this).attr("href"));
 			$("#detailPageForm").submit();
 		});
+		
+		//페이지 번호 클릭 시
+		$(".movePage").on("click", function(e){
+			e.preventDefault();
+			var pageNum = $(this).attr("href");
+			movePageForm.find("input[name='pageNum']").val(pageNum);
+			movePageForm.submit();
+		});
+		
+		//대표이미지 보여주기 위한 즉시실행함수
+		(function(){
+			var arr = new Array();
+			<c:forEach items="${list}" var="community">
+				var communityNo = "${community.community_no}";
+				$.getJSON("/helloanimal/attachPreImage", {community_no:communityNo}, function(preImage){
+					if(preImage != null){
+						var fileCallPath = encodeURIComponent(preImage.uploadpath+"/"+preImage.uuid+"_"+preImage.imagename);
+						var url = "/helloanimal/display?fileName="+fileCallPath;
+						$("#preImg_${community.community_no}").attr("src",url);	
+					}
+				})
+			</c:forEach>
+		})();
 		
 		
 	});
